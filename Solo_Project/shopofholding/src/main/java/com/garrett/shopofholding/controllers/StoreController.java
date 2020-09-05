@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.garrett.shopofholding.models.Store;
-import com.garrett.shopofholding.services.CharacterService;
 import com.garrett.shopofholding.services.StoreService;
 import com.garrett.shopofholding.services.UserService;
 
@@ -19,8 +18,6 @@ import com.garrett.shopofholding.services.UserService;
 @RequestMapping("/shop")
 public class StoreController {
 	
-	@Autowired
-	private CharacterService cService;
 	
 	@Autowired 
 	private UserService uService;

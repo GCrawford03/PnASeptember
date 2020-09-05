@@ -30,9 +30,11 @@ public class CharacterService {
 	public Characters create(Characters character) {
 		return this.cRepo.save(character);
 	}
+	
 	public Characters update(Characters updatedCharacter) {
 		return this.cRepo.save(updatedCharacter);
 	}
+	
 	public void delete(Long id) {
 		this.cRepo.deleteById(id);
 	}
