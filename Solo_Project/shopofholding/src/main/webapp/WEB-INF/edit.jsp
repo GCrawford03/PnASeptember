@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>New Character</title>
+<title>Edit Character</title>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 </head>
 <body>
@@ -33,22 +33,20 @@
   </div>
 </nav>
 
-
-<!-- Create Form -->
-
-
+<!-- Edit Character fields -->
+ 
+ <p class="h2">Welcome <c:out value="${ user.firstName } ${ user.lastName }"/></p>
+ 
 <div class="container justify-content-center mt-5">
 <div class="row welcome text-center">
 	<div class="col-12">
-	<h1 class="display-4"> Create a Character </h1>
+	<h1 class="display-4"> Edit <c:out value="${ character.name }"></c:out> </h1>
 </div>
 </div>
 <div class="row">
 <div class="col">
 
-<p class="h2">Welcome <c:out value="${ user.firstName } ${ user.lastName }"/></p>
-
-	<form:form action="/new" method="post" modelAttribute="character">
+	<form:form action="/${ character.id }" method="post" modelAttribute="character">
 		<form:input type="hidden" value="${ user.id }" path="user"/>
 		<div class="form-group">
 			<form:label path="name">Character Name: </form:label>
@@ -56,8 +54,8 @@
 			<form:input class="form-control" path="name"/>
 		</div>
 		<div class="form-group">
-    	<label>Character Class</label>
-    	<select class="form-control" id="charClass" name="charClass">
+    	<label>Character Class:</label>
+    	<select class="form-control" id="charClass" value="${ character.charClass }" name="charClass">
       		<option>Artificer</option>
       		<option>Barbarian</option>
       		<option>Bard</option>
@@ -78,7 +76,25 @@
 			<form:errors path="strengthScore"/>
 			<form:input type="number" class="form-control" path="strengthScore"/>
 		</div>
+		<div class="row">
+		<div class="form-group col">
+			<form:label path="gp">GP: </form:label>
+			<form:errors path="gp"/>
+			<form:input type="number" class="form-control" path="gp"/>
+		</div>
+		<div class="form-group col">
+			<form:label path="sp">SP: </form:label>
+			<form:errors path="sp"/>
+			<form:input type="number" class="form-control" path="sp"/>
+		</div>
+		<div class="form-group col">
+			<form:label path="cp">CP: </form:label>
+			<form:errors path="cp"/>
+			<form:input type="number" class="form-control" path="cp"/>
+		</div>
+		</div>
 		<input class="btn btn-outline-success" type="submit" value="Submit"/>
+		
 	</form:form>
 </div>
 </div>

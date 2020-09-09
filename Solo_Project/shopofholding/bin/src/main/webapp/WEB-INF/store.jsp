@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -15,7 +14,7 @@
 
 <nav class="navbar navbar-expand-md navbar-dark bg-dark sticky-top">
 <div class="container-fluid">
-	<img src="<c:url value='\img/dnd_logo.png'/>" />
+	<img src="<c:url value='img/dnd_logo.png'/>" />
 	<h1 class ="text-white"> &emsp;The Shop Of Holding</h1>
 	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -26,10 +25,7 @@
           <a class="nav-link" href="/home">Home </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/character/${ characters.id }">Inventory</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link active" href="/shop/${ characters.id }">Shop
+          <a class="nav-link active" href="/shop">The Shop
           <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
@@ -45,7 +41,7 @@
 <div class="container-fluid mt-5">
 <div class="row welcome text-center">
 	<div class="col-12">
-	<h1 class="display-4"> Shop </h1>
+	<h1 class="display-4"> The Shop </h1>
 	</div>
 	<hr>
 	<div class="col-12">
@@ -56,39 +52,26 @@
 </div>
 
 <!-- character select and search bar -->
-<div class="container row justify-content-start mx-4">
-<div class="col-4">
-<div class="dropdown">
-  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Choose Character
-  </button>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-  <c:forEach items="${ user.characters }" var="characters">
-  	<a href="/shop/${ characters.id }" class="list-group-item list-group-item-action mt-1"><c:out value= "${ characters.name }"></c:out></a>
-  </c:forEach>
+<form>
+  <div class="form-row align-items-center">
+    <div class="col-auto my-1">
+      <label class="mr-sm-2" for="inlineFormCustomSelect">My Characters</label>
+      <select class="custom-select mr-sm-2" id="inlineFormCustomSelect">
+        <option selected>Choose...</option>
+        <option value="1">Character 1</option>
+        <option value="2">Character 2</option>
+        <option value="3">Character 3</option>
+      </select>
+    </div>
+    <div class="col-auto my-1">
+      <button type="submit" class="btn-sm btn-primary">Submit</button>
+    </div>
   </div>
-</div>
-</div>
-</div>
+</form>
 
 <!-- Sell Items -->
 
 <div class="container mt-5">
-	<div class="row">
-		<c:choose>
-		<c:when test="${characters.id != null}">
-			<div class="col-12 col-sm-6 col-md-8">
-				<p class="h5 text-danger"> Inventory: <c:out value= "${ characters.name }"></c:out></p>
-			</div>
-			<div class="col-6 col-md-4">
-				<p class="h5 text-danger">GP:<c:out value= "${ characters.gp }"> </c:out> SP: <c:out value= "${ characters.sp }"> </c:out> CP: <c:out value= "${ characters.cp }"> </c:out> </p>
-			</div>
-		</c:when>
-			<c:otherwise>
-				No Character Selected.
-			</c:otherwise>
-		</c:choose>
-	</div>
 <table class="table">
   <thead class="thead-dark">
     <tr>
@@ -97,33 +80,7 @@
       <th scope="col">Weight Lbs</th>
       <th scope="col">Rarity</th>
       <th scope="col">Type</th>
-      <th scope="col">Sell</th>
-    </tr>
-  </thead>
-  <tbody>
-  <c:forEach items="${ characters.inventories }" var="store">
-    <tr>
-      <td>${store.itemName}</td>
-      <td>${store.priceGP}</td>
-      <td>${store.weight}</td>
-      <td>${store.rarity}</td>
-      <td>${store.type}</td>
-      <td><a class="btn btn-sm btn-outline-danger" href="/remove/${characters.id}/${store.id}" role="button">Sell</a></td>
-    </tr>
-    </c:forEach>
-  </tbody>
-</table>
-<!-- Buy items -->
-
-<table class="table">
-  <thead class="thead-light">
-    <tr>
-      <th scope="col">Item Name</th>
-      <th scope="col">Price GP</th>
-      <th scope="col">Weight Lbs</th>
-      <th scope="col">Rarity</th>
-      <th scope="col">Type</th>
-      <th scope="col">Buy</th>
+      <th scope="col">Buy/Sell</th>
     </tr>
   </thead>
   <tbody>
@@ -134,15 +91,40 @@
       <td>${store.weight}</td>
       <td>${store.rarity}</td>
       <td>${store.type}</td>
-      <td><a class="btn btn-sm btn-outline-success" href="/add/${characters.id}/${store.id}" role="button">Buy</a></td>
+      <td><a class="btn btn-sm btn-outline-danger" href="#" role="button">Sell</a></td>
+    </tr>
+    </c:forEach>
+  </tbody>
+</table>
+
+<!-- Buy items -->
+
+<table class="table">
+  <thead class="thead-light">
+    <tr>
+      <th scope="col">Item Name</th>
+      <th scope="col">Price GP</th>
+      <th scope="col">Weight Lbs</th>
+      <th scope="col">Rarity</th>
+      <th scope="col">Type</th>
+      <th scope="col">Purchase</th>
+    </tr>
+  </thead>
+  <tbody>
+  <c:forEach items="${stores}" var="store">
+    <tr>
+      <td>${store.itemName}</td>
+      <td>${store.priceGP}</td>
+      <td>${store.weight}</td>
+      <td>${store.rarity}</td>
+      <td>${store.type}</td>
+      <td><a class="btn btn-sm btn-outline-success" href="#" role="button">Buy</a></td>
     </tr>
     </c:forEach>
   </tbody>
 </table>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
 </body>
 </html>

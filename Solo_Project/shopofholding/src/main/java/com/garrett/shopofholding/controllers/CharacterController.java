@@ -11,10 +11,15 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.garrett.shopofholding.models.Characters;
+import com.garrett.shopofholding.models.Store;
 import com.garrett.shopofholding.services.CharacterService;
+import com.garrett.shopofholding.services.StoreService;
 import com.garrett.shopofholding.services.UserService;
 
 @Controller
@@ -25,6 +30,10 @@ public class CharacterController {
 	
 	@Autowired 
 	private UserService uService;
+	
+	@Autowired
+	private StoreService sService;
+	
 	
 	@GetMapping("/home")
 	public String dashboard(Model viewModel, HttpSession session) {
@@ -38,7 +47,7 @@ public class CharacterController {
 		return "dashboard.jsp";
 	}
 	
-	@GetMapping("/character/new")
+	@GetMapping("/new")
 	private String newCharacter(@ModelAttribute("character") Characters character, HttpSession session, Model viewModel) {
 		Long userId = (Long)session.getAttribute("user_id");
 		if(userId == null)
@@ -47,7 +56,7 @@ public class CharacterController {
 		return "newcharacter.jsp";
 	}
 	
-	@PostMapping("/character/new")
+	@PostMapping("/new")
 	private String create(@Valid @ModelAttribute("character") Characters character, HttpSession session, BindingResult result, Model viewModel) {
 		if(result.hasErrors()) {
 			Long userId = (Long)session.getAttribute("user_id");
@@ -56,6 +65,68 @@ public class CharacterController {
 		}
 			this.cService.create(character);
 			return "redirect:/home";
+	}
+	
+	@GetMapping("/{id}/delete")
+	public String delete(@PathVariable("id") Long id) {
+		this.cService.delete(id);
+		return "redirect:/home";
+	}
+	
+	@GetMapping("/{id}")
+	public String edit(@PathVariable("id") Long id, HttpSession session, Model viewModel) {
+		Long userId = (Long)session.getAttribute("user_id");
+		if(userId == null) {
+			return "redirect:/";
+		} else {
+			Characters character = this.cService.findById(id);
+			viewModel.addAttribute("character", character);
+			viewModel.addAttribute("user", this.uService.findById(userId));
+			return "edit.jsp";
+		}
+	}
+	
+	@RequestMapping(value = "/{id}", method=RequestMethod.POST)
+	public String update(@Valid @ModelAttribute("character") Characters updatedCharacter, BindingResult result, HttpSession session, Model viewModel) {
+		Long userId = (Long)session.getAttribute("user_id");
+		if(result.hasErrors()) {
+			viewModel.addAttribute("user", userId);
+			return "edit.jsp";
+		} else {
+			cService.update(updatedCharacter);
+			return "redirect:/home";
+		}
+	}
+	
+	@GetMapping("/character/{id}")
+	public String show(@PathVariable("id") Long id, Model viewModel, HttpSession session) {
+		Long userId = (Long)session.getAttribute("user_id");
+		if(userId == null)
+			return"redirect:/";
+		
+		List<Store> stores = this.sService.getStore();
+		viewModel.addAttribute("stores", stores);
+		viewModel.addAttribute("character", cService.getOneCharacter(id));
+		viewModel.addAttribute("user_id", this.uService.findById(userId));
+		return "view.jsp";
+		}
+	
+	@GetMapping("/add/{charId}/{itemId}")
+	public String add(@PathVariable("charId") Long charId, @PathVariable("itemId") Long itemId, HttpSession session, Model viewModel) {
+		Long userId = (Long)session.getAttribute("user_id");
+		Store characterItems = this.sService.findById(itemId);
+		Characters inventories = this.cService.getOneCharacter(charId);
+		this.cService.addItem(characterItems, inventories);
+		viewModel.addAttribute("user_id", this.uService.findById(userId));
+		return "redirect:/shop/{charId}";
+	}
+	
+	@GetMapping("/remove/{charId}/{itemId}")
+	public String add(@PathVariable("charId") Long charId, @PathVariable("itemId") Long itemId, HttpSession session) {
+		Store characterItems = this.sService.findById(itemId);
+		Characters inventories = this.cService.getOneCharacter(charId);
+		this.cService.removeItem(characterItems, inventories);
+		return "redirect:/shop/{charId}";
 	}
 
 }

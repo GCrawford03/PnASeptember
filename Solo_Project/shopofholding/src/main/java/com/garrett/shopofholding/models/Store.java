@@ -1,12 +1,17 @@
 package com.garrett.shopofholding.models;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
@@ -31,6 +36,13 @@ public class Store {
 	
 	@DateTimeFormat(pattern = "MM/dd/yyyy HH:mm:ss")
 	private Date updatedAt;
+	
+	@ManyToMany(cascade= CascadeType.ALL)
+	@JoinTable(name="items",
+	joinColumns= @JoinColumn(name="store_id"),
+	inverseJoinColumns= @JoinColumn(name="characters_id")
+	)
+	private List<Characters> characterItems;
 	
 	@PrePersist
 	protected void onCreate() {
@@ -109,4 +121,13 @@ public class Store {
 	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
 	}
+
+	public List<Characters> getCharacterItems() {
+		return characterItems;
+	}
+
+	public void setCharacterItems(List<Characters> characterItems) {
+		this.characterItems = characterItems;
+	}
+	
 }

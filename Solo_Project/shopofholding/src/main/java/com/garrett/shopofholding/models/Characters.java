@@ -1,6 +1,7 @@
 package com.garrett.shopofholding.models;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,6 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -56,6 +59,13 @@ public class Characters {
 	@JoinColumn(name = "user_id", nullable = false)
 	private User user;
 	
+	@ManyToMany
+	@JoinTable( name="items",
+	joinColumns= @JoinColumn(name="Characters_id"),
+	inverseJoinColumns= @JoinColumn(name="Store_id")			
+	)
+	private List<Store> inventories;
+	
 	@PrePersist
 	protected void onCreate() {
 		this.createdAt = new Date();
@@ -64,6 +74,12 @@ public class Characters {
 	@PreUpdate
 	protected void onUpdate() {
 		this.updatedAt = new Date();
+	}
+	
+	
+
+	public Characters(int carryCapacity) {
+		this.carryCapacity = this.strengthScore*15;
 	}
 
 	public Characters() {
@@ -131,7 +147,7 @@ public class Characters {
 	}
 
 	public void setCarryCapacity(int carryCapacity) {
-		this.carryCapacity = carryCapacity;
+		this.carryCapacity = this.strengthScore*15;
 	}
 
 	public Date getCreatedAt() {
@@ -156,5 +172,13 @@ public class Characters {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public List<Store> getInventories() {
+		return inventories;
+	}
+
+	public void setInventories(List<Store> inventories) {
+		this.inventories = inventories;
 	}
 }

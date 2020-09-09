@@ -27,6 +27,9 @@
               </a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" href="/shop">The Shop</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="/logout">Sign out </a>
         </li>
       </ul>
@@ -52,27 +55,30 @@
 <!-- Character Cards -->
 
 <div class="row text-left">
-<p class="h4"><a class="text-danger" href="/new">Create a Character</a></p>
+<p><a href="/character/new" class="text-primary">Create a Character</a></p>
 </div>
 <div class="row">
-<c:forEach items="${ user.characters }" var="characters">
-<div class="col-4">
 <div class="card m-5" style="width: 18rem;">
 <img class="card-img-top" src="<c:url value='img/placeholder_face.jpg'/>" alt="Card image cap">	
-  <div class="card-body form-group">
-    <h5 class="card-title"><c:out value="${ characters.name }"></c:out></h5>
-    <h6 class="card-subtitle mb-3 text-muted"><c:out value="${ characters.charClass }"></c:out></h6>
-    <div class= "row ml-2">
-    <a href="/character/${ characters.id }" class="btn btn-info btn-sm">Play</a>
-    <a href="/${ characters.id }" class="btn btn-info btn-sm ml-4">Edit</a>
-    <form class="delete-form" action="/${ characters.id }" method="post"></form>
-	<input type="hidden" name="_method" value="delete" />
-	<button type="button" class="btn btn-danger btn-sm ml-4" onclick="location.href='/${characters.id}/delete'">Delete</button>
-	</div>
+  <div class="card-body">
+    <h5 class="card-title">Character Name</h5>
+    <h6 class="card-subtitle mb-2 text-muted">Character Class</h6>
+    <a href="#" class="card-link">View Inventory</a>
+    <a href="#" class="card-link">Edit</a>
+    <a href="#" class="card-link">Delete</a>
   </div>
 </div>
+
+<div class="card m-5" style="width: 18rem;">
+<img class="card-img-top" src="<c:url value='img/placeholder_face.jpg'/>" alt="Card image cap">	
+  <div class="card-body">
+    <h5 class="card-title">Character Name</h5>
+    <h6 class="card-subtitle mb-2 text-muted">Character Class</h6>
+    <a href="#" class="card-link">View Inventory</a>
+    <a href="#" class="card-link">Edit</a>
+    <a href="#" class="card-link">Delete</a>
+  </div>
 </div>
-</c:forEach>
 </div>
 </div>
 </div>

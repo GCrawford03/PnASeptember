@@ -45,7 +45,7 @@ public class MainController {
 		}
 		User user = this.uService.registerUser(newUser);
 		session.setAttribute("user_id", user.getId());
-		return "redirect:home";
+		return "redirect:/home";
 	}
 	
 	@RequestMapping("/login")
@@ -56,7 +56,7 @@ public class MainController {
 		}
 		User user = this.uService.getByEmail(email);
 		session.setAttribute("user_id", user.getId());
-		return "redirect:home";
+		return "redirect:/home";
 	}
 	
 	@RequestMapping("/logout")

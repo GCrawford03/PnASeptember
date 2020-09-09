@@ -26,6 +26,9 @@
           <a class="nav-link" href="/home">Home</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" href="/shop">The Shop</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="/logout">Sign out </a>
         </li>
       </ul>
@@ -46,9 +49,7 @@
 <div class="row">
 <div class="col">
 
-<p class="h2">Welcome <c:out value="${ user.firstName } ${ user.lastName }"/></p>
-
-	<form:form action="/new" method="post" modelAttribute="character">
+	<form:form action="/character/new" method="post" modelAttribute="character">
 		<form:input type="hidden" value="${ user.id }" path="user"/>
 		<div class="form-group">
 			<form:label path="name">Character Name: </form:label>
