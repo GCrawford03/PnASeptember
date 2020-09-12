@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.garrett.shopofholding.models.Characters;
 import com.garrett.shopofholding.models.Store;
@@ -86,17 +87,56 @@ public class CharacterController {
 		}
 	}
 	
-	@RequestMapping(value = "/{id}", method=RequestMethod.POST)
-	public String update(@Valid @ModelAttribute("character") Characters updatedCharacter, BindingResult result, HttpSession session, Model viewModel) {
-		Long userId = (Long)session.getAttribute("user_id");
-		if(result.hasErrors()) {
-			viewModel.addAttribute("user", userId);
-			return "edit.jsp";
-		} else {
-			cService.update(updatedCharacter);
+	@RequestMapping(value = "/{id}", method=RequestMethod.PUT)
+	public String update(@Valid @RequestParam("name") String name, @RequestParam("strengthScore") int strengthScore, @RequestParam("charClass") String charClass, @RequestParam("id") Long charId) {
+//		Long userId = (Long)session.getAttribute("user_id");
+//		if(result.hasErrors()) {
+//			viewModel.addAttribute("user", userId);
+//			return "edit.jsp";
+//		} else {
+			cService.update(charId, name, charClass, strengthScore);
 			return "redirect:/home";
 		}
+//	}
+	
+	@GetMapping("/{id}/coin")
+	public String editCoin(@PathVariable("id") Long id, HttpSession session, Model viewModel) {
+		Long userId = (Long)session.getAttribute("user_id");
+		if(userId == null) {
+			return "redirect:/";
+		} else {
+			Characters character = this.cService.findById(id);
+			viewModel.addAttribute("character", character);
+			viewModel.addAttribute("user", this.uService.findById(userId));
+			return "editcoin.jsp";
+		}
 	}
+	
+//	@RequestMapping(value = "/{id}/coin", method=RequestMethod.PUT)
+//	public String updateCoin(@Valid @ModelAttribute("character") Characters updatedCharacter, Store store, BindingResult result, HttpSession session, Model viewModel) {
+//		Long userId = (Long)session.getAttribute("user_id");
+//		if(result.hasErrors()) {
+//			viewModel.addAttribute("user", userId);
+//			return "editcoin.jsp";
+//		} else {
+//			cService.updateCoin(updatedCharacter);
+//			return "redirect:/home";
+//		}
+//	}
+	
+	@RequestMapping(value = "/{id}/coin", method=RequestMethod.PUT)
+	public String updateNew(@Valid @RequestParam("gp") int gp, @RequestParam("sp") int sp, @RequestParam("cp") int cp, @RequestParam("id") Long charId) {
+//		Long userId = (Long)session.getAttribute("user_id");
+//		if(result.hasErrors()) {
+//			viewModel.addAttribute("user", userId);
+//			return "edit.jsp";
+//		} else {
+		//Characters character = this.cService.getOneCharacter(charId);
+		cService.updateCoin(charId, gp, sp, cp);
+		return "redirect:/character/{id}";
+		}
+//	}
+	
 	
 	@GetMapping("/character/{id}")
 	public String show(@PathVariable("id") Long id, Model viewModel, HttpSession session) {
@@ -112,13 +152,22 @@ public class CharacterController {
 		}
 	
 	@GetMapping("/add/{charId}/{itemId}")
-	public String add(@PathVariable("charId") Long charId, @PathVariable("itemId") Long itemId, HttpSession session, Model viewModel) {
+	public String add(@PathVariable("charId") Long charId, @PathVariable("itemId") Long itemId, HttpSession session, Model viewModel, String keyword) {
 		Long userId = (Long)session.getAttribute("user_id");
 		Store characterItems = this.sService.findById(itemId);
 		Characters inventories = this.cService.getOneCharacter(charId);
-		this.cService.addItem(characterItems, inventories);
+		List<Store> stores = this.sService.getStore();
+		String result = this.cService.addItem(characterItems, inventories);
+		if(keyword != null) {
+			viewModel.addAttribute("stores", sService.findByKeyword(keyword));
+		}
+		else {
+		viewModel.addAttribute("stores", stores);
+		}
+		viewModel.addAttribute("characters", cService.getOneCharacter(charId));
+		viewModel.addAttribute("buyResult", result);
 		viewModel.addAttribute("user_id", this.uService.findById(userId));
-		return "redirect:/shop/{charId}";
+		return "store.jsp";
 	}
 	
 	@GetMapping("/remove/{charId}/{itemId}")

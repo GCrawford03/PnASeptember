@@ -3,7 +3,9 @@
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <!DOCTYPE html>
-<html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
 <meta charset="ISO-8859-1">
 <title>The Shop</title>
@@ -55,6 +57,7 @@
 </div>
 </div>
 
+
 <!-- character select and search bar -->
 <div class="container row justify-content-start mx-4">
 <div class="col-4">
@@ -72,23 +75,30 @@
 </div>
 
 <!-- Sell Items -->
+<div class="container-fluid row justify-content-center">
+<p class="h5 text-warning"><c:out value="${ buyResult }"></c:out></p>
+</div>
 
 <div class="container mt-5">
 	<div class="row">
-		<c:choose>
-		<c:when test="${characters.id != null}">
-			<div class="col-12 col-sm-6 col-md-8">
+			<div class="col-12 col-sm-6 col-md-5">
 				<p class="h5 text-danger"> Inventory: <c:out value= "${ characters.name }"></c:out></p>
 			</div>
-			<div class="col-6 col-md-4">
+			<div class="col-5 col-md-4">
+				<p class="h5 text-danger">Carry Capacity:<c:out value= "${ characters.carryCapacity }"> </c:out> lbs</p>
+			</div>
+			<div class="col-5 col-md-3">
 				<p class="h5 text-danger">GP:<c:out value= "${ characters.gp }"> </c:out> SP: <c:out value= "${ characters.sp }"> </c:out> CP: <c:out value= "${ characters.cp }"> </c:out> </p>
 			</div>
-		</c:when>
-			<c:otherwise>
-				No Character Selected.
-			</c:otherwise>
-		</c:choose>
 	</div>
+<div class="my-4">
+<form th:action="@{/shop/${ characters.id } }" method="get">
+	<div class = "row">
+	<input id="txtSearch" type="text" name="keyword" placeholder="search item name or type" class="form-control col-4">
+	<button type="submit" class="btn-sm btn-outline-info col-2">Search</button>
+	</div>
+</form>
+</div>
 <table class="table">
   <thead class="thead-dark">
     <tr>
@@ -102,7 +112,7 @@
   </thead>
   <tbody>
   <c:forEach items="${ characters.inventories }" var="store">
-    <tr>
+    <tr th:each="store:${stores}">
       <td>${store.itemName}</td>
       <td>${store.priceGP}</td>
       <td>${store.weight}</td>
@@ -128,7 +138,7 @@
   </thead>
   <tbody>
   <c:forEach items="${stores}" var="store">
-    <tr>
+    <tr th:each="store:${stores}">
       <td>${store.itemName}</td>
       <td>${store.priceGP}</td>
       <td>${store.weight}</td>

@@ -15,6 +15,7 @@ public class CharacterService {
 	@Autowired
 	private CharacterRepository cRepo;
 	
+	
 	public List<Characters> getCharacter() {
 		return this.cRepo.findAll();
 	}
@@ -34,10 +35,22 @@ public class CharacterService {
 		return this.cRepo.save(character);
 	}
 	
-	public Characters update(Characters updatedCharacter) {
+	public Characters update(Long id, String name, String charClass, int strengthScore ) {
+		Characters updatedCharacter = this.getOneCharacter(id);
+		updatedCharacter.setName(name);
+		updatedCharacter.setCharClass(charClass);
+		updatedCharacter.setStrengthScore(strengthScore);
 		int carryCapacity = updatedCharacter.getCarryCapacity();
 		updatedCharacter.setCarryCapacity(carryCapacity);
 		return this.cRepo.save(updatedCharacter);
+	}
+	
+	public void updateCoin(Long id, int gp, int sp, int cp) {
+		Characters updatedCharacter = this.getOneCharacter(id);
+		updatedCharacter.setGp(gp);
+		updatedCharacter.setSp(sp);
+		updatedCharacter.setCp(cp);
+		cRepo.save(updatedCharacter);
 	}
 	
 	public void delete(Long id) {
@@ -45,16 +58,29 @@ public class CharacterService {
 	}
 	
 	//Add item
-		public void addItem(Store store, Characters character) {
-			int gold = character.getGp - store.getPriceGP();
+		public String addItem(Store store, Characters character) {
+			if(store.getPriceGP() > character.getGp()) {
+				return "Not enough gold.";
+			}
+			int weight = character.getCarryCapacity() - store.getWeight();
+			if(weight <= 0) {
+				return "Not enough space.";
+			}
+			character.updateCarryCapacity(weight);
+			int gold = character.getGp() - store.getPriceGP();
 			character.setGp(gold);
 			List<Store> inventories = character.getInventories();
 			inventories.add(store);
 			this.cRepo.save(character);
+			return "Item purchased.";
 		}
 		
 		// Remove item
 		public void removeItem(Store store, Characters character) {
+			int weight = character.getCarryCapacity() + store.getWeight();
+			int gold = character.getGp() + store.getPriceGP();
+			character.updateCarryCapacity(weight);
+			character.setGp(gold);
 			character.getInventories().remove(store);
 			this.cRepo.save(character);
 		}

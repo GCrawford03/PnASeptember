@@ -32,7 +32,7 @@ public class StoreController {
 	
 	
 	@GetMapping("/{id}")
-	public String characterShop(Model viewModel, HttpSession session, @PathVariable("id") Long charId) {
+	public String characterShop(Model viewModel, HttpSession session, @PathVariable("id") Long charId, String keyword) {
 	Long userId = (Long)session.getAttribute("user_id");
 	if(userId == null)
 		return"redirect:/";
@@ -40,7 +40,12 @@ public class StoreController {
 	List<Store> stores = this.sService.getStore();
 	viewModel.addAttribute("user", this.uService.findById(userId));
 	viewModel.addAttribute("characters", this.cService.findById(charId));
+	if(keyword != null) {
+		viewModel.addAttribute("stores", sService.findByKeyword(keyword));
+	}
+	else {
 	viewModel.addAttribute("stores", stores);
+	}
 	return "store.jsp";
 	}
 }

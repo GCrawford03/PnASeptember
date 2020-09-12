@@ -75,14 +75,14 @@
     <img class="mr-3" src="\img/lbs_measure_weight.png" width="64" alt="Generic placeholder image">
     <div class="media-body">
       <h5 class="mt-0 mb-1">Carry Capacity</h5>
-	<c:out value="${ character.carryCapacity }"></c:out>
+	<c:out value="${ character.carryCapacity }"> </c:out> lbs
     </div>
   </li>
 </ul>
 </div>
 <div class="container-fluid">
 	<div class="row justify-content-center">
-		<p><a class="text-danger h6" href="/${ character.id }"> add/change currency</a></p>
+		<p><a class="text-danger h6" href="/${ character.id }/coin"> add/change currency</a></p>
 	</div>
 </div>
 

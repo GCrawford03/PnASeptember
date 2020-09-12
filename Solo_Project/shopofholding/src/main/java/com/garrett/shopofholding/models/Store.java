@@ -26,7 +26,7 @@ public class Store {
 	private Long id;
 	private String itemName;
 	private int priceGP;	
-	private String weight;
+	private int weight;
 	private String rarity;
 	private String type;
 	
@@ -82,11 +82,11 @@ public class Store {
 		this.priceGP = priceGP;
 	}
 
-	public String getWeight() {
+	public int getWeight() {
 		return weight;
 	}
 
-	public void setWeight(String weight) {
+	public void setWeight(int weight) {
 		this.weight = weight;
 	}
 

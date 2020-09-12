@@ -76,7 +76,6 @@ public class Characters {
 		this.updatedAt = new Date();
 	}
 	
-	
 
 	public Characters(int carryCapacity) {
 		this.carryCapacity = this.strengthScore*15;
@@ -84,6 +83,12 @@ public class Characters {
 
 	public Characters() {
 		
+	}
+
+	public Characters(String name, int strengthScore, String charClass) {
+		this.strengthScore = strengthScore;
+		this.charClass = charClass;
+		this.name = name;
 	}
 
 	public Long getId() {
@@ -148,6 +153,10 @@ public class Characters {
 
 	public void setCarryCapacity(int carryCapacity) {
 		this.carryCapacity = this.strengthScore*15;
+	}
+	
+	public void updateCarryCapacity(int carryCapacity) {
+		this.carryCapacity = carryCapacity;
 	}
 
 	public Date getCreatedAt() {

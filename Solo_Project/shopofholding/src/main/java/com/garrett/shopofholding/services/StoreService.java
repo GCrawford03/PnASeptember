@@ -21,5 +21,9 @@ public class StoreService {
 	public Store findById(Long id) {
 		return this.sRepo.findById(id).orElse(null);
 	}
+	
+	public List<Store> findByKeyword(String keyword) {
+		return sRepo.findByKeyword(keyword);
+	}
  
 }
