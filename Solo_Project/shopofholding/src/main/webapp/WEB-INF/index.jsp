@@ -45,7 +45,7 @@
 </div>
 </div>
 
-<!-- Login -->
+<!-- Login and register -->
 
 <div class="container-fluid m-5">
 				<div class="text-center">

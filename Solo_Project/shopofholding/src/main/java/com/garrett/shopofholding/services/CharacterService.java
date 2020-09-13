@@ -29,11 +29,15 @@ public class CharacterService {
 		return character;
 	}
 	
+	// create character
+	
 	public Characters create(Characters character) {
 		int carryCapacity = character.getCarryCapacity();
 		character.setCarryCapacity(carryCapacity);
 		return this.cRepo.save(character);
 	}
+	
+	// update character
 	
 	public Characters update(Long id, String name, String charClass, int strengthScore ) {
 		Characters updatedCharacter = this.getOneCharacter(id);
@@ -45,6 +49,8 @@ public class CharacterService {
 		return this.cRepo.save(updatedCharacter);
 	}
 	
+	// update character money
+	
 	public void updateCoin(Long id, int gp, int sp, int cp) {
 		Characters updatedCharacter = this.getOneCharacter(id);
 		updatedCharacter.setGp(gp);
@@ -52,6 +58,8 @@ public class CharacterService {
 		updatedCharacter.setCp(cp);
 		cRepo.save(updatedCharacter);
 	}
+	
+	// delete character
 	
 	public void delete(Long id) {
 		this.cRepo.deleteById(id);

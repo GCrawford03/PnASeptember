@@ -58,7 +58,7 @@
 </div>
 
 
-<!-- character select and search bar -->
+<!-- character select, info and search bar -->
 <div class="container row justify-content-start mx-4">
 <div class="col-4">
 <div class="dropdown">
@@ -74,7 +74,6 @@
 </div>
 </div>
 
-<!-- Sell Items -->
 <div class="container-fluid row justify-content-center">
 <p class="h5 text-warning"><c:out value="${ buyResult }"></c:out></p>
 </div>
@@ -91,14 +90,21 @@
 				<p class="h5 text-danger">GP:<c:out value= "${ characters.gp }"> </c:out> SP: <c:out value= "${ characters.sp }"> </c:out> CP: <c:out value= "${ characters.cp }"> </c:out> </p>
 			</div>
 	</div>
+
 <div class="my-4">
 <form th:action="@{/shop/${ characters.id } }" method="get">
 	<div class = "row">
 	<input id="txtSearch" type="text" name="keyword" placeholder="search item name or type" class="form-control col-4">
-	<button type="submit" class="btn-sm btn-outline-info col-2">Search</button>
+	<button type="submit" class="btn btn-sm btn-outline-info col-2 ml-3">Search</button>
 	</div>
 </form>
 </div>
+</div>
+
+<!-- Sell Items Table -->
+
+
+<div class="container">
 <table class="table">
   <thead class="thead-dark">
     <tr>
@@ -123,6 +129,8 @@
     </c:forEach>
   </tbody>
 </table>
+
+
 <!-- Buy items -->
 
 <table class="table">
@@ -150,7 +158,6 @@
   </tbody>
 </table>
 </div>
-
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>

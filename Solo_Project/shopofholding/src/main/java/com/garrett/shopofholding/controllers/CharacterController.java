@@ -48,6 +48,8 @@ public class CharacterController {
 		return "dashboard.jsp";
 	}
 	
+	// create new Character
+	
 	@GetMapping("/new")
 	private String newCharacter(@ModelAttribute("character") Characters character, HttpSession session, Model viewModel) {
 		Long userId = (Long)session.getAttribute("user_id");
@@ -68,11 +70,15 @@ public class CharacterController {
 			return "redirect:/home";
 	}
 	
+	// delete character
+	
 	@GetMapping("/{id}/delete")
 	public String delete(@PathVariable("id") Long id) {
 		this.cService.delete(id);
 		return "redirect:/home";
 	}
+	
+	// update character name, strength, class
 	
 	@GetMapping("/{id}")
 	public String edit(@PathVariable("id") Long id, HttpSession session, Model viewModel) {
@@ -89,15 +95,11 @@ public class CharacterController {
 	
 	@RequestMapping(value = "/{id}", method=RequestMethod.PUT)
 	public String update(@Valid @RequestParam("name") String name, @RequestParam("strengthScore") int strengthScore, @RequestParam("charClass") String charClass, @RequestParam("id") Long charId) {
-//		Long userId = (Long)session.getAttribute("user_id");
-//		if(result.hasErrors()) {
-//			viewModel.addAttribute("user", userId);
-//			return "edit.jsp";
-//		} else {
 			cService.update(charId, name, charClass, strengthScore);
 			return "redirect:/home";
-		}
-//	}
+	}
+	
+	// update character money
 	
 	@GetMapping("/{id}/coin")
 	public String editCoin(@PathVariable("id") Long id, HttpSession session, Model viewModel) {
@@ -112,31 +114,13 @@ public class CharacterController {
 		}
 	}
 	
-//	@RequestMapping(value = "/{id}/coin", method=RequestMethod.PUT)
-//	public String updateCoin(@Valid @ModelAttribute("character") Characters updatedCharacter, Store store, BindingResult result, HttpSession session, Model viewModel) {
-//		Long userId = (Long)session.getAttribute("user_id");
-//		if(result.hasErrors()) {
-//			viewModel.addAttribute("user", userId);
-//			return "editcoin.jsp";
-//		} else {
-//			cService.updateCoin(updatedCharacter);
-//			return "redirect:/home";
-//		}
-//	}
-	
 	@RequestMapping(value = "/{id}/coin", method=RequestMethod.PUT)
 	public String updateNew(@Valid @RequestParam("gp") int gp, @RequestParam("sp") int sp, @RequestParam("cp") int cp, @RequestParam("id") Long charId) {
-//		Long userId = (Long)session.getAttribute("user_id");
-//		if(result.hasErrors()) {
-//			viewModel.addAttribute("user", userId);
-//			return "edit.jsp";
-//		} else {
-		//Characters character = this.cService.getOneCharacter(charId);
 		cService.updateCoin(charId, gp, sp, cp);
 		return "redirect:/character/{id}";
-		}
-//	}
+	}
 	
+	// view character
 	
 	@GetMapping("/character/{id}")
 	public String show(@PathVariable("id") Long id, Model viewModel, HttpSession session) {
@@ -150,6 +134,8 @@ public class CharacterController {
 		viewModel.addAttribute("user_id", this.uService.findById(userId));
 		return "view.jsp";
 		}
+	
+	// add item to inventory from shop
 	
 	@GetMapping("/add/{charId}/{itemId}")
 	public String add(@PathVariable("charId") Long charId, @PathVariable("itemId") Long itemId, HttpSession session, Model viewModel, String keyword) {
@@ -166,9 +152,11 @@ public class CharacterController {
 		}
 		viewModel.addAttribute("characters", cService.getOneCharacter(charId));
 		viewModel.addAttribute("buyResult", result);
-		viewModel.addAttribute("user_id", this.uService.findById(userId));
-		return "store.jsp";
+		viewModel.addAttribute("user", this.uService.findById(userId));
+		return "redirect:/shop/{charId}";
 	}
+	
+	// remove item from inventory
 	
 	@GetMapping("/remove/{charId}/{itemId}")
 	public String add(@PathVariable("charId") Long charId, @PathVariable("itemId") Long itemId, HttpSession session) {

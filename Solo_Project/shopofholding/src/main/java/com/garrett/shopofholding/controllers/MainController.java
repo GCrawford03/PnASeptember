@@ -32,6 +32,8 @@ public class MainController {
 		return "index.jsp";
 	}
 	
+	// register user
+	
 	@RequestMapping("/register")
 	public String registerPage(@ModelAttribute("user") User user) {
 		return "register.jsp";
@@ -48,6 +50,8 @@ public class MainController {
 		return "redirect:/home";
 	}
 	
+	// login
+	
 	@RequestMapping("/login")
 	public String login(@RequestParam("email") String email, @RequestParam("password") String password, RedirectAttributes redirectAtts, HttpSession session) {
 		if(!this.uService.authenticateUser(email, password)) {
@@ -58,6 +62,8 @@ public class MainController {
 		session.setAttribute("user_id", user.getId());
 		return "redirect:/home";
 	}
+	
+	//logout
 	
 	@RequestMapping("/logout")
 	public String logout(HttpSession session) {

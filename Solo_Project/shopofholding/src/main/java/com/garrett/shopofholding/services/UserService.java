@@ -27,11 +27,14 @@ public class UserService {
 		return this.uRepo.findByEmail(email);
 	}
 	
+	// register New User
 	public User registerUser(User user) {
 		String hashed = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
 		user.setPassword(hashed);
 		return uRepo.save(user);
 	}
+	
+	// login and authenticate user
 	
 	public boolean authenticateUser(String email, String password) {
 		User user = this.uRepo.findByEmail(email);

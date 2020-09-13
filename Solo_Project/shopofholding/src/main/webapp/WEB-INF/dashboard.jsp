@@ -57,7 +57,7 @@
 <div class="row">
 <c:forEach items="${ user.characters }" var="characters">
 <div class="col-4">
-<div class="card m-5" style="width: 18rem;">
+<div class="card text-white bg-dark m-5" style="width: 18rem;">
 <img class="card-img-top" src="<c:url value='img/placeholder_face.jpg'/>" alt="Card image cap">	
   <div class="card-body form-group">
     <h5 class="card-title"><c:out value="${ characters.name }"></c:out></h5>
