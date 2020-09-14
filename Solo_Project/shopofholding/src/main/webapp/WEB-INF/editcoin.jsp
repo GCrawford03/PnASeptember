@@ -26,6 +26,12 @@
           <a class="nav-link" href="/home">Home</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" href="/character/${ character.id }">Inventory</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/shop/${ character.id }">Shop</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="/logout">Sign out </a>
         </li>
       </ul>

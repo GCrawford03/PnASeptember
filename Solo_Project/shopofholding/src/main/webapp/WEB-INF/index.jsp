@@ -68,7 +68,7 @@
 					<div class="row justify-content-center">
 					<button class="btn btn-outline-success">Login</button>
 					<div class="ml-2">
-					<a class="btn btn-md btn-outline-secondary" href="/register" role="button">Register</a>
+					<a class="btn btn-md btn-outline-danger" href="/register" role="button">Register</a>
 					</div>
 					</div>
 				</form>
